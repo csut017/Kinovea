@@ -18,5 +18,10 @@ namespace Kinovea.Services
             this.Name = name;
             this.KeyData = keyData;
         }
+
+        public override string ToString()
+        {
+            return $"{this.Name} [{this.KeyData}]";
+        }
     }
 }
