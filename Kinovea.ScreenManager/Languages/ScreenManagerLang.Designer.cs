@@ -439,6 +439,33 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel.
+        /// </summary>
+        public static string DataExport_Excel {
+            get {
+                return ResourceManager.GetString("DataExport_Excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel files (*.xlsx)|*.xlsx.
+        /// </summary>
+        public static string DataExport_Excel_Filter {
+            get {
+                return ResourceManager.GetString("DataExport_Excel_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export to Excel.
+        /// </summary>
+        public static string DataExport_Excel_Title {
+            get {
+                return ResourceManager.GetString("DataExport_Excel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line calibration.
         /// </summary>
         public static string dlgCalibrateLine_Title {
@@ -957,6 +984,60 @@ namespace Kinovea.ScreenManager.Languages {
         public static string dlgDiapoExport_Title {
             get {
                 return ResourceManager.GetString("dlgDiapoExport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string dlgExportData_Cancel {
+            get {
+                return ResourceManager.GetString("dlgExportData_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Export.
+        /// </summary>
+        public static string dlgExportData_Export {
+            get {
+                return ResourceManager.GetString("dlgExportData_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Format:.
+        /// </summary>
+        public static string dlgExportData_Format {
+            get {
+                return ResourceManager.GetString("dlgExportData_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include Events.
+        /// </summary>
+        public static string dlgExportData_IncludeEvents {
+            get {
+                return ResourceManager.GetString("dlgExportData_IncludeEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options:.
+        /// </summary>
+        public static string dlgExportData_Options {
+            get {
+                return ResourceManager.GetString("dlgExportData_Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Data.
+        /// </summary>
+        public static string dlgExportData_Title {
+            get {
+                return ResourceManager.GetString("dlgExportData_Title", resourceCulture);
             }
         }
         
@@ -1614,6 +1695,15 @@ namespace Kinovea.ScreenManager.Languages {
         public static string ExtraData_Radius {
             get {
                 return ResourceManager.GetString("ExtraData_Radius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All files (*.*)|*.*.
+        /// </summary>
+        public static string FileFilter_Default {
+            get {
+                return ResourceManager.GetString("FileFilter_Default", resourceCulture);
             }
         }
         
@@ -2559,6 +2649,15 @@ namespace Kinovea.ScreenManager.Languages {
         public static string mnuDrawingTrackingStop {
             get {
                 return ResourceManager.GetString("mnuDrawingTrackingStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Data....
+        /// </summary>
+        public static string mnuExportData {
+            get {
+                return ResourceManager.GetString("mnuExportData", resourceCulture);
             }
         }
         

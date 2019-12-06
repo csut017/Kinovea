@@ -1293,4 +1293,37 @@
   <data name="CommandRemoveEvent_FriendlyName" xml:space="preserve">
     <value>Remove Event</value>
   </data>
+  <data name="FileFilter_Default" xml:space="preserve">
+    <value>All files (*.*)|*.*</value>
+  </data>
+  <data name="mnuExportData" xml:space="preserve">
+    <value>Export Data...</value>
+  </data>
+  <data name="DataExport_Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="DataExport_Excel_Filter" xml:space="preserve">
+    <value>Excel files (*.xlsx)|*.xlsx</value>
+  </data>
+  <data name="DataExport_Excel_Title" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="dlgExportData_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="dlgExportData_Export" xml:space="preserve">
+    <value>&amp;Export</value>
+  </data>
+  <data name="dlgExportData_Format" xml:space="preserve">
+    <value>Format:</value>
+  </data>
+  <data name="dlgExportData_IncludeEvents" xml:space="preserve">
+    <value>Include Events</value>
+  </data>
+  <data name="dlgExportData_Options" xml:space="preserve">
+    <value>Options:</value>
+  </data>
+  <data name="dlgExportData_Title" xml:space="preserve">
+    <value>Export Data</value>
+  </data>
 </root>

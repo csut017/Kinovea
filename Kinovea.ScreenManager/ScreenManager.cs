@@ -90,6 +90,7 @@ namespace Kinovea.ScreenManager
         private ToolStripMenuItem mnuExportXHTML = new ToolStripMenuItem();
         private ToolStripMenuItem mnuExportTEXT = new ToolStripMenuItem();
         private ToolStripMenuItem mnuLoadAnalysis = new ToolStripMenuItem();
+        private ToolStripMenuItem mnuExportData = new ToolStripMenuItem();
 
         private ToolStripMenuItem mnuCutDrawing = new ToolStripMenuItem();
         private ToolStripMenuItem mnuCopyDrawing = new ToolStripMenuItem();
@@ -298,16 +299,20 @@ namespace Kinovea.ScreenManager
             mnuExportXHTML.Click += new EventHandler(mnuExportXHTML_OnClick);
             mnuExportTEXT.Image = Properties.Resources.file_txt;
             mnuExportTEXT.Click += new EventHandler(mnuExportTEXT_OnClick);
-            
+
+            mnuExportData.MergeIndex = 8;
+            mnuExportData.MergeAction = MergeAction.Insert;
+            mnuExportData.Click += mnuExportData_OnClick;
+
             mnuExportSpreadsheet.DropDownItems.AddRange(new ToolStripItem[] { mnuExportODF, mnuExportMSXML, mnuExportXHTML, mnuExportTEXT });
             
             // Load Analysis
             mnuLoadAnalysis.Image = Properties.Resources.file_kva2;
             mnuLoadAnalysis.Click += mnuLoadAnalysisOnClick;
-            mnuLoadAnalysis.MergeIndex = 8;
+            mnuLoadAnalysis.MergeIndex = 9;
             mnuLoadAnalysis.MergeAction = MergeAction.Insert;
 
-            ToolStripItem[] subFile = new ToolStripItem[] { mnuCloseFile, mnuCloseFile2, mnuSave, mnuExportSpreadsheet, mnuLoadAnalysis };
+            ToolStripItem[] subFile = new ToolStripItem[] { mnuCloseFile, mnuCloseFile2, mnuSave, mnuExportSpreadsheet, mnuExportData, mnuLoadAnalysis };
             mnuCatchFile.DropDownItems.AddRange(subFile);
             #endregion
 
@@ -527,6 +532,11 @@ namespace Kinovea.ScreenManager
             ToolStripManager.Merge(ThisMenu, menu);
 
             RefreshCultureMenu();
+        }
+
+        private void mnuExportData_OnClick(object sender, EventArgs e)
+        {
+            this.ExportData();
         }
 
         public void ExtendToolBar(ToolStrip toolbar)
@@ -984,6 +994,7 @@ namespace Kinovea.ScreenManager
                     mnuSave.Enabled = true;
                     toolSave.Enabled = true;
                     mnuExportSpreadsheet.Enabled = player.FrameServer.Metadata.HasData;
+                    mnuExportData.Enabled = player.FrameServer.Metadata.HasData;
                     mnuExportODF.Enabled = player.FrameServer.Metadata.HasData;
                     mnuExportMSXML.Enabled = player.FrameServer.Metadata.HasData;
                     mnuExportXHTML.Enabled = player.FrameServer.Metadata.HasData;
@@ -1036,6 +1047,7 @@ namespace Kinovea.ScreenManager
                     mnuSave.Enabled = false;
                     toolSave.Enabled = false;
                     mnuExportSpreadsheet.Enabled = false;
+                    mnuExportData.Enabled = false;
                     mnuExportODF.Enabled = false;
                     mnuExportMSXML.Enabled = false;
                     mnuExportXHTML.Enabled = false;
@@ -1089,6 +1101,7 @@ namespace Kinovea.ScreenManager
                 toolSave.Enabled = false;
                 mnuLoadAnalysis.Enabled = false;
                 mnuExportSpreadsheet.Enabled = false;
+                mnuExportData.Enabled = false;
                 mnuExportODF.Enabled = false;
                 mnuExportMSXML.Enabled = false;
                 mnuExportXHTML.Enabled = false;
@@ -1384,6 +1397,7 @@ namespace Kinovea.ScreenManager
             mnuCloseFile2.Text = ScreenManagerLang.Generic_Close;
             mnuSave.Text = ScreenManagerLang.mnuSave;
             mnuExportSpreadsheet.Text = ScreenManagerLang.mnuExportSpreadsheet;
+            mnuExportData.Text = ScreenManagerLang.mnuExportData;
             mnuExportODF.Text = ScreenManagerLang.mnuExportODF;
             mnuExportMSXML.Text = ScreenManagerLang.mnuExportMSXML;
             mnuExportXHTML.Text = ScreenManagerLang.mnuExportXHTML;
@@ -1545,6 +1559,29 @@ namespace Kinovea.ScreenManager
                 return;
 
             MetadataExporter.Export(player.FrameServer.Metadata, saveFileDialog.FileName, format);
+        }
+
+        private void ExportData()
+        {
+            var player = activeScreen as PlayerScreen;
+            if (player == null || !player.FrameServer.Metadata.HasData)
+                return;
+
+            DoStopPlaying();
+
+            var dlg = new UserInterface.ExportData();
+            var result = dlg.ShowDialog();
+            if (result != DialogResult.OK) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = dlg.Exporter.Title;
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Filter = dlg.Exporter.Filter;
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.FileName = Path.GetFileNameWithoutExtension(player.FrameServer.Metadata.FullPath);
+            if (saveFileDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveFileDialog.FileName)) return;
+
+            dlg.Exporter.Export(saveFileDialog.FileName, player.FrameServer.Metadata, dlg.Options);
         }
         #endregion
 
