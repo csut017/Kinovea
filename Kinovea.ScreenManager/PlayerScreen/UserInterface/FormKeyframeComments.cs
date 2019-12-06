@@ -92,14 +92,22 @@ namespace Kinovea.ScreenManager
             if (m_Keyframe != _keyframe)
             {
                 SaveInfos();
-                if (m_Keyframe != null) m_Keyframe.EventAdded -= this.OnEventAdded;
+                if (m_Keyframe != null)
+                {
+                    m_Keyframe.EventAdded -= this.OnEventChanged;
+                    m_Keyframe.EventRemoved -= this.OnEventChanged;
+                }
                 m_Keyframe = _keyframe;
                 LoadInfos();
-                if (m_Keyframe != null) m_Keyframe.EventAdded += this.OnEventAdded;
+                if (m_Keyframe != null)
+                {
+                    m_Keyframe.EventAdded += this.OnEventChanged;
+                    m_Keyframe.EventRemoved += this.OnEventChanged;
+                }
             }
         }
 
-        private void OnEventAdded(object sender, EventArgs e)
+        private void OnEventChanged(object sender, EventArgs e)
         {
             this.LoadInfos();
         }

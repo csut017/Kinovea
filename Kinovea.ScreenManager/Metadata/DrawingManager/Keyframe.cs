@@ -113,7 +113,8 @@ namespace Kinovea.ScreenManager
         #endregion
 
         #region Events
-        public event EventHandler<EventAddedArgs> EventAdded;
+        public event EventHandler<KeyFrameEventChangedArgs> EventAdded;
+        public event EventHandler<KeyFrameEventChangedArgs> EventRemoved;
         #endregion
 
         #region Constructor
@@ -155,13 +156,20 @@ namespace Kinovea.ScreenManager
             this.disabledThumbnail = Grayscale.CommonAlgorithms.BT709.Apply(thumbnail);
         }
 
-        public void AddEvent(EventDefinition evt)
+        public void ToggleEvent(EventDefinition evt)
         {
-            if (this.Events.Any(kfe => kfe.Name == evt.Title)) return;
-
-            var newEvent = evt.GenerateKeyFrameEvent();
-            this.Events.Add(newEvent);
-            this.EventAdded?.Invoke(this, new EventAddedArgs(newEvent));
+            var current = this.Events.FirstOrDefault(kfe => kfe.Name == evt.Title);
+            if (current != null)
+            {
+                this.Events.Remove(current);
+                this.EventRemoved?.Invoke(this, new KeyFrameEventChangedArgs(current));
+            }
+            else
+            {
+                var newEvent = evt.GenerateKeyFrameEvent();
+                this.Events.Add(newEvent);
+                this.EventAdded?.Invoke(this, new KeyFrameEventChangedArgs(newEvent));
+            }
         }
         #endregion
 
@@ -326,6 +334,9 @@ namespace Kinovea.ScreenManager
             int hash = 0;
             foreach (AbstractDrawing drawing in drawings)
                 hash ^= drawing.ContentHash;
+
+            foreach (var evt in this.Events)
+                hash ^= evt.Name.GetHashCode();
 
             if(comments != null)
                 hash ^= comments.GetHashCode();

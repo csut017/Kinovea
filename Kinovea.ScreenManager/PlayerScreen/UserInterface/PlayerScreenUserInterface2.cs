@@ -1358,16 +1358,16 @@ namespace Kinovea.ScreenManager
                     btnClose_Click(this, EventArgs.Empty);
                     break;
 
-                case PlayerScreenCommands.RecordEvent1:
-                case PlayerScreenCommands.RecordEvent2:
-                case PlayerScreenCommands.RecordEvent3:
-                case PlayerScreenCommands.RecordEvent4:
-                case PlayerScreenCommands.RecordEvent5:
-                case PlayerScreenCommands.RecordEvent6:
-                case PlayerScreenCommands.RecordEvent7:
-                case PlayerScreenCommands.RecordEvent8:
-                case PlayerScreenCommands.RecordEvent9:
-                case PlayerScreenCommands.RecordEvent0:
+                case PlayerScreenCommands.ToggleEvent1:
+                case PlayerScreenCommands.ToggleEvent2:
+                case PlayerScreenCommands.ToggleEvent3:
+                case PlayerScreenCommands.ToggleEvent4:
+                case PlayerScreenCommands.ToggleEvent5:
+                case PlayerScreenCommands.ToggleEvent6:
+                case PlayerScreenCommands.ToggleEvent7:
+                case PlayerScreenCommands.ToggleEvent8:
+                case PlayerScreenCommands.ToggleEvent9:
+                case PlayerScreenCommands.ToggleEvent0:
                     this.RecordEvent(command);
                     break;
 
@@ -5097,7 +5097,7 @@ namespace Kinovea.ScreenManager
             if (keyFrame != null)
             {
                 var eventDefinition = this.m_FrameServer.Metadata.GetEventDefinition(command);
-                if (eventDefinition != null) keyFrame.AddEvent(eventDefinition);
+                if (eventDefinition != null) keyFrame.ToggleEvent(eventDefinition);
             }
         }
         #endregion

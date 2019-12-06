@@ -97,16 +97,16 @@ namespace Kinovea.Services
 
         Close,
 
-        RecordEvent1,
-        RecordEvent2,
-        RecordEvent3,
-        RecordEvent4,
-        RecordEvent5,
-        RecordEvent6,
-        RecordEvent7,
-        RecordEvent8,
-        RecordEvent9,
-        RecordEvent0,
+        ToggleEvent1,
+        ToggleEvent2,
+        ToggleEvent3,
+        ToggleEvent4,
+        ToggleEvent5,
+        ToggleEvent6,
+        ToggleEvent7,
+        ToggleEvent8,
+        ToggleEvent9,
+        ToggleEvent0,
     }
 
     public enum DualCaptureCommands

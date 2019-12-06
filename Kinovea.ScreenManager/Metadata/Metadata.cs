@@ -1416,16 +1416,16 @@ namespace Kinovea.ScreenManager
                 Title = title
             };
 
-            this.events[PlayerScreenCommands.RecordEvent1] = ed("Event #1");
-            this.events[PlayerScreenCommands.RecordEvent2] = ed("Event #2");
-            this.events[PlayerScreenCommands.RecordEvent3] = ed("Event #3");
-            this.events[PlayerScreenCommands.RecordEvent4] = ed("Event #4");
-            this.events[PlayerScreenCommands.RecordEvent5] = ed("Event #5");
-            this.events[PlayerScreenCommands.RecordEvent6] = ed("Event #6");
-            this.events[PlayerScreenCommands.RecordEvent7] = ed("Event #7");
-            this.events[PlayerScreenCommands.RecordEvent8] = ed("Event #8");
-            this.events[PlayerScreenCommands.RecordEvent9] = ed("Event #9");
-            this.events[PlayerScreenCommands.RecordEvent0] = ed("Event #10");
+            this.events[PlayerScreenCommands.ToggleEvent1] = ed("Event #1");
+            this.events[PlayerScreenCommands.ToggleEvent2] = ed("Event #2");
+            this.events[PlayerScreenCommands.ToggleEvent3] = ed("Event #3");
+            this.events[PlayerScreenCommands.ToggleEvent4] = ed("Event #4");
+            this.events[PlayerScreenCommands.ToggleEvent5] = ed("Event #5");
+            this.events[PlayerScreenCommands.ToggleEvent6] = ed("Event #6");
+            this.events[PlayerScreenCommands.ToggleEvent7] = ed("Event #7");
+            this.events[PlayerScreenCommands.ToggleEvent8] = ed("Event #8");
+            this.events[PlayerScreenCommands.ToggleEvent9] = ed("Event #9");
+            this.events[PlayerScreenCommands.ToggleEvent0] = ed("Event #10");
         }
         #endregion
     }

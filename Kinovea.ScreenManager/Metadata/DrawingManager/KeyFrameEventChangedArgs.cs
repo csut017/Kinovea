@@ -2,9 +2,9 @@
 
 namespace Kinovea.ScreenManager
 {
-    public class EventAddedArgs: EventArgs
+    public class KeyFrameEventChangedArgs: EventArgs
     {
-        public EventAddedArgs(KeyFrameEvent newEvent)
+        public KeyFrameEventChangedArgs(KeyFrameEvent newEvent)
         {
             this.Event = newEvent;
         }
