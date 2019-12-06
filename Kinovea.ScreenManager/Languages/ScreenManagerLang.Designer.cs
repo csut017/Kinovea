@@ -19,7 +19,7 @@ namespace Kinovea.ScreenManager.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ScreenManagerLang {
@@ -124,6 +124,15 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Event.
+        /// </summary>
+        public static string CommandAddEvent_FriendlyName {
+            get {
+                return ResourceManager.GetString("CommandAddEvent_FriendlyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Drawing.
         /// </summary>
         public static string CommandDeleteDrawing_FriendlyName {
@@ -147,6 +156,15 @@ namespace Kinovea.ScreenManager.Languages {
         public static string CommandModifyDrawing_FriendlyName {
             get {
                 return ResourceManager.GetString("CommandModifyDrawing_FriendlyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Event.
+        /// </summary>
+        public static string CommandRemoveEvent_FriendlyName {
+            get {
+                return ResourceManager.GetString("CommandRemoveEvent_FriendlyName", resourceCulture);
             }
         }
         

@@ -77,7 +77,8 @@ namespace Kinovea.ScreenManager
         public event EventHandler<MultiDrawingItemEventArgs> MultiDrawingItemDeleting;
         public event EventHandler<TrackableDrawingEventArgs> TrackableDrawingAdded;
         public event EventHandler<EventArgs<HotkeyCommand>> DualCommandReceived;
-        public event EventHandler<EventArgs<AbstractDrawing>> DataAnalysisAsked; 
+        public event EventHandler<EventArgs<AbstractDrawing>> DataAnalysisAsked;
+        public event EventHandler<EventArgs<HistoryMemento>> HistoryMementoGenerated;
         #endregion
         
         #region Commands encapsulating domain logic implemented in the presenter.
@@ -1368,7 +1369,7 @@ namespace Kinovea.ScreenManager
                 case PlayerScreenCommands.ToggleEvent8:
                 case PlayerScreenCommands.ToggleEvent9:
                 case PlayerScreenCommands.ToggleEvent0:
-                    this.RecordEvent(command);
+                    this.ToggleEvent(command);
                     break;
 
                 default:
@@ -5090,14 +5091,18 @@ namespace Kinovea.ScreenManager
         #endregion
 
         #region Events
-        public void RecordEvent(PlayerScreenCommands command)
+        public void ToggleEvent(PlayerScreenCommands command)
         {
             this.AddKeyframe();
             var keyFrame = this.m_FrameServer.Metadata.HitKeyframe;
             if (keyFrame != null)
             {
                 var eventDefinition = this.m_FrameServer.Metadata.GetEventDefinition(command);
-                if (eventDefinition != null) keyFrame.ToggleEvent(eventDefinition);
+                if (eventDefinition != null)
+                {
+                    var memento = keyFrame.ToggleEvent(eventDefinition);
+                    this.HistoryMementoGenerated?.Invoke(this, new EventArgs<HistoryMemento>(memento));
+                }
             }
         }
         #endregion

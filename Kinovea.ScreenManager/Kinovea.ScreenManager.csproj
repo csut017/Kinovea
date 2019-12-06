@@ -487,6 +487,8 @@
     <Compile Include="Thumbnails\FileDetails.cs" />
     <Compile Include="UndoRedo\HistoryMemento.cs" />
     <Compile Include="UndoRedo\HistoryMementos\HistoryMementoAddDrawing.cs" />
+    <Compile Include="UndoRedo\HistoryMementos\HistoryMementoAddEvent.cs" />
+    <Compile Include="UndoRedo\HistoryMementos\HistoryMementoRemoveEvent.cs" />
     <Compile Include="UndoRedo\HistoryMementos\HistoryMementoAddKeyframe.cs" />
     <Compile Include="UndoRedo\HistoryMementos\HistoryMementoAddMultiDrawingItem.cs" />
     <Compile Include="UndoRedo\HistoryMementos\HistoryMementoDeleteDrawing.cs" />
@@ -1066,7 +1068,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\ScreenManagerLang.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ScreenManagerLang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerScreen\UserInterface\PlayerScreenUserInterface2.resx">

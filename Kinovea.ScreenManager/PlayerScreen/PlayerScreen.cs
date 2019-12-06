@@ -362,7 +362,9 @@ namespace Kinovea.ScreenManager
             view.MultiDrawingItemDeleting += View_MultiDrawingItemDeleting;
             view.DualCommandReceived += (s, e) => OnDualCommandReceived(e);
             view.DataAnalysisAsked += (s, e) => ShowDataAnalysis(e.Value);
-            
+            view.HistoryMementoGenerated += (s, e) => historyStack.PushNewCommand(e.Value);
+
+
             // Just for the magnifier. Remove as soon as possible when the adding of the magnifier is handled in Metadata.
             view.TrackableDrawingAdded += (s, e) => AddTrackableDrawing(e.TrackableDrawing);
             

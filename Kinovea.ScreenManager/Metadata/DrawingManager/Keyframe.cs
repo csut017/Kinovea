@@ -156,21 +156,41 @@ namespace Kinovea.ScreenManager
             this.disabledThumbnail = Grayscale.CommonAlgorithms.BT709.Apply(thumbnail);
         }
 
-        public void ToggleEvent(EventDefinition evt)
+        #region Events
+        public HistoryMemento ToggleEvent(EventDefinition evt)
         {
             var current = this.Events.FirstOrDefault(kfe => kfe.Name == evt.Title);
             if (current != null)
             {
-                this.Events.Remove(current);
-                this.EventRemoved?.Invoke(this, new KeyFrameEventChangedArgs(current));
+                return this.RemoveEvent(current)
+                 ? new HistoryMementoRemoveEvent(this, current)
+                 : null;
             }
-            else
-            {
-                var newEvent = evt.GenerateKeyFrameEvent();
-                this.Events.Add(newEvent);
-                this.EventAdded?.Invoke(this, new KeyFrameEventChangedArgs(newEvent));
-            }
+
+            current = evt.GenerateKeyFrameEvent();
+            return this.AddEvent(current) 
+                ? new HistoryMementoAddEvent(this, current)
+                : null;
         }
+
+        public bool AddEvent(KeyFrameEvent evt)
+        {
+            if (this.Events.Contains(evt)) return false;
+
+            this.Events.Add(evt);
+            this.EventAdded?.Invoke(this, new KeyFrameEventChangedArgs(evt));
+            return true;
+        }
+
+        public bool RemoveEvent(KeyFrameEvent evt)
+        {
+            if (!this.Events.Contains(evt)) return false;
+
+            this.Events.Remove(evt);
+            this.EventRemoved?.Invoke(this, new KeyFrameEventChangedArgs(evt));
+            return true;
+        }
+        #endregion
         #endregion
 
         #region AbstractDrawingManager implementation
