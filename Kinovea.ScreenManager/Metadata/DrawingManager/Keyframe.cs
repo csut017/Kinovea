@@ -113,7 +113,7 @@ namespace Kinovea.ScreenManager
         #endregion
 
         #region Events
-        public event EventHandler EventAdded;
+        public event EventHandler<EventAddedArgs> EventAdded;
         #endregion
 
         #region Constructor
@@ -159,8 +159,9 @@ namespace Kinovea.ScreenManager
         {
             if (this.Events.Any(kfe => kfe.Name == evt.Title)) return;
 
-            this.Events.Add(evt.GenerateKeyFrameEvent());
-            this.EventAdded?.Invoke(this, EventArgs.Empty);
+            var newEvent = evt.GenerateKeyFrameEvent();
+            this.Events.Add(newEvent);
+            this.EventAdded?.Invoke(this, new EventAddedArgs(newEvent));
         }
         #endregion
 

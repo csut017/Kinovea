@@ -278,6 +278,7 @@
     <Compile Include="FilePatterns\PatternContext.cs" />
     <Compile Include="FilePatterns\PatternSymbolsFile.cs" />
     <Compile Include="FilePicker.cs" />
+    <Compile Include="Metadata\DrawingManager\EventAddedArgs.cs" />
     <Compile Include="Metadata\DrawingManager\KeyFrameEvent.cs" />
     <Compile Include="Metadata\Drawings\GenericPosture\GenericPostureOption.cs" />
     <Compile Include="Metadata\EventDefinition.cs" />
