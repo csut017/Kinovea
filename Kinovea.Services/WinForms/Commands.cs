@@ -95,7 +95,18 @@ namespace Kinovea.Services
         DecreaseSpeedRoundTo10,
         DecreaseSpeedRoundTo25,
 
-        Close
+        Close,
+
+        RecordEvent1,
+        RecordEvent2,
+        RecordEvent3,
+        RecordEvent4,
+        RecordEvent5,
+        RecordEvent6,
+        RecordEvent7,
+        RecordEvent8,
+        RecordEvent9,
+        RecordEvent0,
     }
 
     public enum DualCaptureCommands

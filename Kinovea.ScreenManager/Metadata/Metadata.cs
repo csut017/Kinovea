@@ -36,6 +36,7 @@ using System.Xml.Xsl;
 using System.Linq;
 using Kinovea.Services;
 using Kinovea.Video;
+using System.Collections.ObjectModel;
 
 namespace Kinovea.ScreenManager
 {
@@ -281,6 +282,10 @@ namespace Kinovea.ScreenManager
         {
             get { return trackabilityManager;}
         }
+
+        public ICollection<EventDefinition> Events { 
+            get { return this.events.Values; }
+        }
         #endregion
 
         #region Members
@@ -332,6 +337,8 @@ namespace Kinovea.ScreenManager
         private ImageTransform imageTransform = new ImageTransform();
         private TrackabilityManager trackabilityManager = new TrackabilityManager();
         private Temporizer calibrationChangedTemporizer;
+
+        private IDictionary<PlayerScreenCommands, EventDefinition> events = new Dictionary<PlayerScreenCommands, EventDefinition>();
         
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
@@ -353,6 +360,7 @@ namespace Kinovea.ScreenManager
 
             calibrationChangedTemporizer = new Temporizer(200, TracksCalibrationChanged);
 
+            this.InitialiseEventDefinitions();
             log.Debug("Constructing new Metadata object.");
         }
         public Metadata(string kvaString,  VideoInfo info, HistoryStack historyStack, TimeCodeBuilder timecodeBuilder, ClosestFrameDisplayer closestFrameDisplayer)
@@ -1197,9 +1205,21 @@ namespace Kinovea.ScreenManager
 
         }
         #endregion
-        
+
+        #region Event Definitions
+        public EventDefinition GetEventDefinition(PlayerScreenCommands command)
+        {
+            if (this.events.TryGetValue(command, out EventDefinition evt))
+            {
+                return evt;
+            }
+
+            return null;
+        }
         #endregion
-   
+
+        #endregion
+
         #region Lower level Helpers
         private void ResetCoreContent()
         {
@@ -1387,6 +1407,25 @@ namespace Kinovea.ScreenManager
         {
             if (CameraCalibrationAsked != null)
                 CameraCalibrationAsked(this, EventArgs.Empty);
+        }
+
+        private void InitialiseEventDefinitions()
+        {
+            EventDefinition ed(string title) => new EventDefinition
+            {
+                Title = title
+            };
+
+            this.events[PlayerScreenCommands.RecordEvent1] = ed("Event #1");
+            this.events[PlayerScreenCommands.RecordEvent2] = ed("Event #2");
+            this.events[PlayerScreenCommands.RecordEvent3] = ed("Event #3");
+            this.events[PlayerScreenCommands.RecordEvent4] = ed("Event #4");
+            this.events[PlayerScreenCommands.RecordEvent5] = ed("Event #5");
+            this.events[PlayerScreenCommands.RecordEvent6] = ed("Event #6");
+            this.events[PlayerScreenCommands.RecordEvent7] = ed("Event #7");
+            this.events[PlayerScreenCommands.RecordEvent8] = ed("Event #8");
+            this.events[PlayerScreenCommands.RecordEvent9] = ed("Event #9");
+            this.events[PlayerScreenCommands.RecordEvent0] = ed("Event #10");
         }
         #endregion
     }

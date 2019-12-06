@@ -208,7 +208,17 @@ namespace Kinovea.Services
                     hk(PlayerScreenCommands.DecreaseSpeed1, Keys.Control | Keys.Down),
                     hk(PlayerScreenCommands.DecreaseSpeedRoundTo10, Keys.Shift | Keys.Down),
                     hk(PlayerScreenCommands.DecreaseSpeedRoundTo25, Keys.Down),
-                    hk(PlayerScreenCommands.Close, Keys.Control | Keys.F4)
+                    hk(PlayerScreenCommands.Close, Keys.Control | Keys.F4),
+                    hk(PlayerScreenCommands.RecordEvent1, Keys.D1),
+                    hk(PlayerScreenCommands.RecordEvent2, Keys.D2),
+                    hk(PlayerScreenCommands.RecordEvent3, Keys.D3),
+                    hk(PlayerScreenCommands.RecordEvent4, Keys.D4),
+                    hk(PlayerScreenCommands.RecordEvent5, Keys.D5),
+                    hk(PlayerScreenCommands.RecordEvent6, Keys.D6),
+                    hk(PlayerScreenCommands.RecordEvent7, Keys.D7),
+                    hk(PlayerScreenCommands.RecordEvent8, Keys.D8),
+                    hk(PlayerScreenCommands.RecordEvent9, Keys.D9),
+                    hk(PlayerScreenCommands.RecordEvent0, Keys.D0),
                     }
                 },
                 { "DualCapture", new HotkeyCommand[]{

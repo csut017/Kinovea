@@ -26,6 +26,8 @@ using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 using Kinovea.Services;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Kinovea.ScreenManager
 {
@@ -54,12 +56,14 @@ namespace Kinovea.ScreenManager
         #endregion
 
         #region Contructors
-        public formKeyframeComments(PlayerScreenUserInterface _psui)
+        public formKeyframeComments(PlayerScreenUserInterface _psui, Metadata metadata)
         {
             InitializeComponent();
             RefreshUICulture();
             m_bUserActivated = false;
             m_psui = _psui;
+
+            this.eventOccurances.Items.AddRange(metadata.Events.ToArray());
         }
 
         /// <summary>
@@ -181,7 +185,15 @@ namespace Kinovea.ScreenManager
             txtTitle.Text = m_Keyframe.Title;
             rtbComment.Clear();
             rtbComment.Rtf = m_Keyframe.Comments;
+
+            var checkedEvents = m_Keyframe.Events.Select(evt => evt.Name).ToHashSet();
+            for (var loop = 0; loop < this.eventOccurances.Items.Count; loop++)
+            {
+                var evt = (EventDefinition)this.eventOccurances.Items[loop];
+                this.eventOccurances.SetItemChecked(loop, checkedEvents.Contains(evt.Title));
+            }
         }
+
         private void SaveInfos()
         {
             // Commit changes to the keyframe
@@ -196,6 +208,12 @@ namespace Kinovea.ScreenManager
                 {
                     m_Keyframe.Title = txtTitle.Text;	
                     m_psui.OnKeyframesTitleChanged();
+                }
+
+                m_Keyframe.Events.Clear();
+                foreach (var evt in this.eventOccurances.CheckedItems.Cast<EventDefinition>())
+                {
+                    m_Keyframe.Events.Add(evt.GenerateKeyFrameEvent());
                 }
             }
         }

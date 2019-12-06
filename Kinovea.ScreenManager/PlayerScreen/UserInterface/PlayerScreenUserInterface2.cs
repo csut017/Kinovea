@@ -1029,7 +1029,7 @@ namespace Kinovea.ScreenManager
         }
         private void SetupKeyframeCommentsHub()
         {
-            m_KeyframeCommentsHub = new formKeyframeComments(this);
+            m_KeyframeCommentsHub = new formKeyframeComments(this, m_FrameServer.Metadata);
             FormsHelper.MakeTopmost(m_KeyframeCommentsHub);
         }
         private void LookForLinkedAnalysis(string file)
@@ -1357,6 +1357,20 @@ namespace Kinovea.ScreenManager
                 case PlayerScreenCommands.Close:
                     btnClose_Click(this, EventArgs.Empty);
                     break;
+
+                case PlayerScreenCommands.RecordEvent1:
+                case PlayerScreenCommands.RecordEvent2:
+                case PlayerScreenCommands.RecordEvent3:
+                case PlayerScreenCommands.RecordEvent4:
+                case PlayerScreenCommands.RecordEvent5:
+                case PlayerScreenCommands.RecordEvent6:
+                case PlayerScreenCommands.RecordEvent7:
+                case PlayerScreenCommands.RecordEvent8:
+                case PlayerScreenCommands.RecordEvent9:
+                case PlayerScreenCommands.RecordEvent0:
+                    this.RecordEvent(command);
+                    break;
+
                 default:
                     return base.ExecuteCommand(cmd);
             }
@@ -5072,6 +5086,19 @@ namespace Kinovea.ScreenManager
             // Reset to the current selection.
             m_iSelStart = mps.SelStart;
             m_iSelEnd = mps.SelEnd;
+        }
+        #endregion
+
+        #region Events
+        public void RecordEvent(PlayerScreenCommands command)
+        {
+            this.AddKeyframe();
+            var keyFrame = this.m_FrameServer.Metadata.HitKeyframe;
+            if (keyFrame != null)
+            {
+                var eventDefinition = this.m_FrameServer.Metadata.GetEventDefinition(command);
+                if (eventDefinition != null) keyFrame.AddEvent(eventDefinition);
+            }
         }
         #endregion
     }

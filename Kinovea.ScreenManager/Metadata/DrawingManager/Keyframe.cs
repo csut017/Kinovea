@@ -93,6 +93,8 @@ namespace Kinovea.ScreenManager
         {
             get { return GetContentHash();}
         }
+
+        public IList<KeyFrameEvent> Events { get; } = new List<KeyFrameEvent>();
         #endregion
 
         #region Members
@@ -108,6 +110,10 @@ namespace Kinovea.ScreenManager
         private bool disabled;
         private Metadata metadata;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #endregion
+
+        #region Events
+        public event EventHandler EventAdded;
         #endregion
 
         #region Constructor
@@ -147,6 +153,14 @@ namespace Kinovea.ScreenManager
             Rectangle rect = UIHelper.RatioStretch(image.Size, new Size(100, 75));
             this.thumbnail = new Bitmap(image, rect.Width, rect.Height);
             this.disabledThumbnail = Grayscale.CommonAlgorithms.BT709.Apply(thumbnail);
+        }
+
+        public void AddEvent(EventDefinition evt)
+        {
+            if (this.Events.Any(kfe => kfe.Name == evt.Title)) return;
+
+            this.Events.Add(evt.GenerateKeyFrameEvent());
+            this.EventAdded?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -188,20 +202,32 @@ namespace Kinovea.ScreenManager
             if (!string.IsNullOrEmpty(comments))
                 w.WriteElementString("Comment", comments);
 
-            if (drawings.Count == 0)
-                return;
-
-            // Drawings are written in reverse order to match order of addition.
-            w.WriteStartElement("Drawings");
-            for (int i = drawings.Count - 1; i >= 0; i--)
+            if (drawings.Count > 0)
             {
-                IKvaSerializable serializableDrawing = drawings[i] as IKvaSerializable;
-                if (serializableDrawing == null)
-                    continue;
+                // Drawings are written in reverse order to match order of addition.
+                w.WriteStartElement("Drawings");
+                for (int i = drawings.Count - 1; i >= 0; i--)
+                {
+                    IKvaSerializable serializableDrawing = drawings[i] as IKvaSerializable;
+                    if (serializableDrawing == null)
+                        continue;
 
-                DrawingSerializer.Serialize(w, serializableDrawing, SerializationFilter.All);
+                    DrawingSerializer.Serialize(w, serializableDrawing, SerializationFilter.All);
+                }
+                w.WriteEndElement();
             }
-            w.WriteEndElement();
+
+            if (this.Events.Count > 0)
+            {
+                w.WriteStartElement("events");
+                foreach (var evt in this.Events)
+                {
+                    w.WriteStartElement("event");
+                    evt.WriteXml(w);
+                    w.WriteEndElement();
+                }
+                w.WriteEndElement();
+            }
         }
         private void ReadXml(XmlReader r, PointF scale, TimestampMapper timestampMapper)
         {
@@ -226,6 +252,9 @@ namespace Kinovea.ScreenManager
                         break;
                     case "Drawings":
                         ParseDrawings(r, scale);
+                        break;
+                    case "events":
+                        this.ParseEvents(r);
                         break;
                     default:
                         string unparsed = r.ReadOuterXml();
@@ -264,7 +293,20 @@ namespace Kinovea.ScreenManager
 
             r.ReadEndElement();
         }
-        
+
+        private void ParseEvents(XmlReader r)
+        {
+            if (r.IsEmptyElement) return;
+
+            r.Read();
+            while ((r.NodeType == XmlNodeType.Element) && (r.Name == "event"))
+            {
+                if (r.HasAttributes) this.Events.Add(KeyFrameEvent.ReadFromXml(r));
+                r.Read();
+            }
+            r.ReadEndElement();
+        }
+
         #endregion
 
         #region IComparable Implementation
