@@ -6,6 +6,8 @@ namespace Kinovea.ScreenManager.Data
 {
     public abstract class Exporter
     {
+        private bool _isCancelling;
+
         public Exporter()
         {
             this.Filter = ScreenManagerLang.FileFilter_Default;
@@ -34,7 +36,26 @@ namespace Kinovea.ScreenManager.Data
             get; protected set;
         }
 
-        public abstract void Export(string filename, Metadata metadata, ExportSettings options);
+        public bool IsCancelling
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this._isCancelling;
+                }
+            }
+
+            set
+            {
+                lock (this)
+                {
+                    this._isCancelling = value;
+                }
+            }
+        }
+
+        public abstract void Export(Metadata metadata, ExportSettings options);
 
         protected static double ConvertTimeCodeToSeconds(string timeCode)
         {
@@ -61,6 +82,11 @@ namespace Kinovea.ScreenManager.Data
             }
 
             return seconds;
+        }
+
+        public void CancelAsync()
+        {
+            this.IsCancelling = true;
         }
     }
 }

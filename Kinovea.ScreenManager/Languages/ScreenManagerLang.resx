@@ -1332,6 +1332,9 @@
   <data name="dlgExportData_OpenAfterSave" xml:space="preserve">
     <value>Open After Saving</value>
   </data>
+  <data name="dlgExportData_FileName" xml:space="preserve">
+    <value>Filename:</value>
+  </data>
   <data name="Error_ExportFailed" xml:space="preserve">
     <value>Export Failed</value>
   </data>

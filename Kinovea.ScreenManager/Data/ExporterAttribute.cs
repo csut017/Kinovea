@@ -5,14 +5,13 @@ namespace Kinovea.ScreenManager.Data
 {
     public class ExporterAttribute : Attribute
     {
-        public ExporterAttribute(string name)
+        public ExporterAttribute(string name, string defaultExtension)
         {
             this.Name = name;
+            this.DefaultExtension = defaultExtension;
         }
 
-        public Type ExporterType { get; set; }
-
-        public string Name { get; private set; }
+        public string DefaultExtension { get; private set; }
 
         public string DisplayName
         {
@@ -21,6 +20,10 @@ namespace Kinovea.ScreenManager.Data
                 return ScreenManagerLang.ResourceManager.GetString(this.Name, ScreenManagerLang.Culture);
             }
         }
+
+        public Type ExporterType { get; set; }
+
+        public string Name { get; private set; }
 
         public override string ToString()
         {

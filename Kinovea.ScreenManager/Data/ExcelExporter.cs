@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Kinovea.ScreenManager.Data
 {
-    [Exporter("DataExport_Excel")]
+    [Exporter("DataExport_Excel", "xlsx")]
     public class ExcelExporter
         : Exporter
     {
@@ -26,7 +26,7 @@ namespace Kinovea.ScreenManager.Data
             this.DefaultSettings.OpenAfterSave = true;
         }
 
-        public override void Export(string filename, Metadata metadata, ExportSettings options)
+        public override void Export(Metadata metadata, ExportSettings options)
         {
             var output = new XLWorkbook();
             var ws = output.Worksheets.Add("Frames");
@@ -83,6 +83,8 @@ namespace Kinovea.ScreenManager.Data
                         ws.Cell(row, evtCol).Value = true;
                     }
                 }
+
+                if (this.IsCancelling) return;
             }
 
             // Generate the table
@@ -90,10 +92,13 @@ namespace Kinovea.ScreenManager.Data
             range.CreateTable("Frames");
 
             // Save everything
-            output.SaveAs(filename);
+            output.SaveAs(options.Filename);
+            if (this.IsCancelling) return;
+
+            // Open the file if requested
             if (options.OpenAfterSave)
             {
-                System.Diagnostics.Process.Start(filename);
+                System.Diagnostics.Process.Start(options.Filename);
             }
         }
 

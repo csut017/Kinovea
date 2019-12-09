@@ -1006,6 +1006,15 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filename:.
+        /// </summary>
+        public static string dlgExportData_FileName {
+            get {
+                return ResourceManager.GetString("dlgExportData_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Format:.
         /// </summary>
         public static string dlgExportData_Format {

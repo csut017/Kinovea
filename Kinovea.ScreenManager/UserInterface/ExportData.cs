@@ -2,6 +2,8 @@
 using Kinovea.ScreenManager.Languages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,7 +11,44 @@ namespace Kinovea.ScreenManager.UserInterface
 {
     public partial class ExportData : Form
     {
-        private static readonly Lazy<ICollection<Data.ExporterAttribute>> exporters = new Lazy<ICollection<Data.ExporterAttribute>>(ScanForExporters);
+        private static readonly Lazy<ICollection<Data.ExporterAttribute>> _exporters = new Lazy<ICollection<Data.ExporterAttribute>>(ScanForExporters);
+        private readonly FrameServerPlayer _frameServer;
+        private readonly BackgroundWorker _worker;
+        private Data.Exporter _exporter;
+        private string defaultFileName = string.Empty;
+
+        public ExportData(FrameServerPlayer frameServer)
+        {
+            this._frameServer = frameServer;
+
+            // Initialise the UI
+            InitializeComponent();
+            this.UpdateLanguage();
+
+            // Initialise the background worker
+            this._worker = new BackgroundWorker();
+            this._worker.DoWork += this.DoExport;
+            this._worker.RunWorkerCompleted += this.ExportCompleted;
+
+            // Load the exporters
+            this.dataFormat.Items.AddRange(_exporters.Value.ToArray());
+            if (this.dataFormat.Items.Count > 0)
+            {
+                this.dataFormat.SelectedIndex = 0;
+                this.InitialiseOptions();
+                this.UpdateFileName();
+            }
+        }
+
+        private Data.Exporter Exporter
+        {
+            get
+            {
+                var attrib = this.dataFormat.SelectedItem as Data.ExporterAttribute;
+                var exporter = Activator.CreateInstance(attrib.ExporterType) as Data.Exporter;
+                return exporter;
+            }
+        }
 
         private static ICollection<ExporterAttribute> ScanForExporters()
         {
@@ -28,16 +67,101 @@ namespace Kinovea.ScreenManager.UserInterface
             return exporters;
         }
 
-        public ExportData()
+        private void cancelButton_Click(object sender, EventArgs e)
         {
-            InitializeComponent();
-            this.UpdateLanguage();
-            this.dataFormat.Items.AddRange(exporters.Value.ToArray());
-            if (this.dataFormat.Items.Count > 0)
+            if (this._worker.IsBusy)
             {
-                this.dataFormat.SelectedIndex = 0;
-                this.InitialiseOptions();
+                this._exporter.CancelAsync();
             }
+            else
+            {
+                this.Close();
+            }
+        }
+
+        private void CheckCanExport()
+        {
+            this.exportButton.Enabled = !string.IsNullOrEmpty(this.filename.Text);
+        }
+
+        private void dataFormat_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.InitialiseOptions();
+            this.UpdateFileName();
+        }
+
+        private void DoExport(object sender, DoWorkEventArgs e)
+        {
+            var opts = e.Argument as Data.ExportSettings;
+            try
+            {
+                this._exporter.Export(this._frameServer.Metadata, opts);
+            }
+            catch (Exception error)
+            {
+                e.Result = error;
+            }
+        }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            this.dataFormat.Enabled = false;
+            this.filename.Enabled = false;
+            this.optionsLabel.Enabled = false;
+            this.exportButton.Enabled = false;
+
+            this._exporter = this.Exporter;
+            var opts = new Data.ExportSettings
+            {
+                IncludeComments = this.optionIncludeComments.Checked,
+                IncludeEvents = this.optionIncludeEvents.Checked,
+                OpenAfterSave = this.optionOpenAfterSave.Checked,
+                Filename = this.filename.Text
+            };
+            this._worker.RunWorkerAsync(opts);
+        }
+
+        private void ExportCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.dataFormat.Enabled = true;
+            this.filename.Enabled = true;
+            this.optionsLabel.Enabled = true;
+            this.exportButton.Enabled = true;
+            if (e.Result is Exception error)
+            {
+                MessageBox.Show(error.Message, ScreenManagerLang.Error_ExportFailed, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (!this._exporter.IsCancelling)
+            {
+                this.Close();
+            }
+
+            this._exporter.IsCancelling = false;
+        }
+
+        private void ExportData_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = this._worker.IsBusy;
+        }
+
+        private void filename_TextChanged(object sender, EventArgs e)
+        {
+            this.CheckCanExport();
+        }
+
+        private void findFileButton_Click(object sender, EventArgs e)
+        {
+            var exporter = this.Exporter;
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = exporter.Title,
+                RestoreDirectory = true,
+                Filter = exporter.Filter,
+                FilterIndex = 1,
+                FileName = this.filename.Text
+            };
+            if (saveFileDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveFileDialog.FileName)) return;
+            this.filename.Text = saveFileDialog.FileName;
         }
 
         private void InitialiseOptions()
@@ -56,26 +180,17 @@ namespace Kinovea.ScreenManager.UserInterface
             this.optionOpenAfterSave.Checked = exporter.DefaultSettings.OpenAfterSave;
         }
 
-        public Data.Exporter Exporter
+        private void UpdateFileName()
         {
-            get
+            if (this.dataFormat.SelectedItem is Data.ExporterAttribute attrib)
             {
-                var attrib = this.dataFormat.SelectedItem as Data.ExporterAttribute;
-                var exporter = Activator.CreateInstance(attrib.ExporterType) as Data.Exporter;
-                return exporter;
-            }
-        }
-
-        public Data.ExportSettings Options
-        {
-            get
-            {
-                return new Data.ExportSettings
+                var newFileName = Path.ChangeExtension(this._frameServer.Metadata.FullPath, attrib.DefaultExtension);
+                if (this.filename.Text == this.defaultFileName)
                 {
-                    IncludeComments = this.optionIncludeComments.Checked,
-                    IncludeEvents = this.optionIncludeEvents.Checked,
-                    OpenAfterSave = this.optionOpenAfterSave.Checked,
-                };
+                    this.filename.Text = newFileName;
+                }
+
+                this.defaultFileName = newFileName;
             }
         }
 
@@ -83,6 +198,7 @@ namespace Kinovea.ScreenManager.UserInterface
         {
             this.Text = ScreenManagerLang.dlgExportData_Title;
             this.dataFormatLabel.Text = ScreenManagerLang.dlgExportData_Format;
+            this.filenameLabel.Text = ScreenManagerLang.dlgExportData_FileName;
             this.optionsLabel.Text = ScreenManagerLang.dlgExportData_Options;
             this.optionIncludeComments.Text = ScreenManagerLang.dlgExportData_IncludeComments;
             this.optionIncludeEvents.Text = ScreenManagerLang.dlgExportData_IncludeEvents;
@@ -90,11 +206,6 @@ namespace Kinovea.ScreenManager.UserInterface
 
             this.cancelButton.Text = ScreenManagerLang.dlgExportData_Cancel;
             this.exportButton.Text = ScreenManagerLang.dlgExportData_Export;
-        }
-
-        private void dataFormat_SelectedValueChanged(object sender, EventArgs e)
-        {
-            this.InitialiseOptions();
         }
     }
 }

@@ -36,6 +36,9 @@
             this.optionIncludeEvents = new System.Windows.Forms.CheckBox();
             this.exportButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.filenameLabel = new System.Windows.Forms.Label();
+            this.filename = new System.Windows.Forms.TextBox();
+            this.findFileButton = new System.Windows.Forms.Button();
             this.optionsLabel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +50,7 @@
             this.dataFormat.FormattingEnabled = true;
             this.dataFormat.Location = new System.Drawing.Point(130, 12);
             this.dataFormat.Name = "dataFormat";
-            this.dataFormat.Size = new System.Drawing.Size(257, 21);
+            this.dataFormat.Size = new System.Drawing.Size(320, 21);
             this.dataFormat.TabIndex = 1;
             this.dataFormat.SelectedValueChanged += new System.EventHandler(this.dataFormat_SelectedValueChanged);
             // 
@@ -68,10 +71,10 @@
             this.optionsLabel.Controls.Add(this.optionOpenAfterSave);
             this.optionsLabel.Controls.Add(this.optionIncludeComments);
             this.optionsLabel.Controls.Add(this.optionIncludeEvents);
-            this.optionsLabel.Location = new System.Drawing.Point(15, 39);
+            this.optionsLabel.Location = new System.Drawing.Point(15, 69);
             this.optionsLabel.Name = "optionsLabel";
-            this.optionsLabel.Size = new System.Drawing.Size(372, 104);
-            this.optionsLabel.TabIndex = 2;
+            this.optionsLabel.Size = new System.Drawing.Size(435, 97);
+            this.optionsLabel.TabIndex = 5;
             this.optionsLabel.TabStop = false;
             this.optionsLabel.Text = "dlgExportData_Options";
             // 
@@ -117,24 +120,53 @@
             // exportButton
             // 
             this.exportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.exportButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.exportButton.Location = new System.Drawing.Point(231, 149);
+            this.exportButton.Enabled = false;
+            this.exportButton.Location = new System.Drawing.Point(294, 172);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(75, 23);
-            this.exportButton.TabIndex = 3;
+            this.exportButton.TabIndex = 6;
             this.exportButton.Text = "dlgExportData_Export";
             this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(312, 149);
+            this.cancelButton.Location = new System.Drawing.Point(375, 172);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 4;
+            this.cancelButton.TabIndex = 7;
             this.cancelButton.Text = "dlgExportData_Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
+            // filenameLabel
+            // 
+            this.filenameLabel.AutoSize = true;
+            this.filenameLabel.Location = new System.Drawing.Point(12, 43);
+            this.filenameLabel.Name = "filenameLabel";
+            this.filenameLabel.Size = new System.Drawing.Size(124, 13);
+            this.filenameLabel.TabIndex = 2;
+            this.filenameLabel.Text = "dlgExportData_FileName";
+            // 
+            // filename
+            // 
+            this.filename.Location = new System.Drawing.Point(131, 40);
+            this.filename.Name = "filename";
+            this.filename.Size = new System.Drawing.Size(288, 20);
+            this.filename.TabIndex = 3;
+            this.filename.TextChanged += new System.EventHandler(this.filename_TextChanged);
+            // 
+            // findFileButton
+            // 
+            this.findFileButton.Location = new System.Drawing.Point(425, 40);
+            this.findFileButton.Name = "findFileButton";
+            this.findFileButton.Size = new System.Drawing.Size(25, 23);
+            this.findFileButton.TabIndex = 4;
+            this.findFileButton.Text = "...";
+            this.findFileButton.UseVisualStyleBackColor = true;
+            this.findFileButton.Click += new System.EventHandler(this.findFileButton_Click);
             // 
             // ExportData
             // 
@@ -142,7 +174,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(399, 184);
+            this.ClientSize = new System.Drawing.Size(462, 207);
+            this.Controls.Add(this.findFileButton);
+            this.Controls.Add(this.filename);
+            this.Controls.Add(this.filenameLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.optionsLabel);
@@ -156,6 +191,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ExportData";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExportData_FormClosing);
             this.optionsLabel.ResumeLayout(false);
             this.optionsLabel.PerformLayout();
             this.ResumeLayout(false);
@@ -173,5 +209,8 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.CheckBox optionOpenAfterSave;
         private System.Windows.Forms.CheckBox optionIncludeComments;
+        private System.Windows.Forms.Label filenameLabel;
+        private System.Windows.Forms.TextBox filename;
+        private System.Windows.Forms.Button findFileButton;
     }
 }

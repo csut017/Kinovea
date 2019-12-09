@@ -2,6 +2,8 @@
 {
     public class ExportSettings
     {
+        public string Filename { get; set; }
+
         public bool IncludeComments { get; set; }
 
         public bool IncludeEvents { get; set; }
