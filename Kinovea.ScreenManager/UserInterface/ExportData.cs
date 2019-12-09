@@ -11,6 +11,7 @@ namespace Kinovea.ScreenManager.UserInterface
 {
     public partial class ExportData : Form
     {
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly Lazy<ICollection<Data.ExporterAttribute>> _exporters = new Lazy<ICollection<Data.ExporterAttribute>>(ScanForExporters);
         private readonly FrameServerPlayer _frameServer;
         private readonly BackgroundWorker _worker;
@@ -53,6 +54,7 @@ namespace Kinovea.ScreenManager.UserInterface
         {
             get
             {
+                _log.Debug("Initialising exporter");
                 var attrib = this.dataFormat.SelectedItem as Data.ExporterAttribute;
                 var exporter = Activator.CreateInstance(attrib.ExporterType) as Data.Exporter;
                 return exporter;
@@ -61,6 +63,7 @@ namespace Kinovea.ScreenManager.UserInterface
 
         private static ICollection<ExporterAttribute> ScanForExporters()
         {
+            _log.Debug("Scanning for exporters...");
             var exporters = typeof(Data.Exporter)
                 .Assembly
                 .GetTypes()
@@ -73,6 +76,7 @@ namespace Kinovea.ScreenManager.UserInterface
                 .Where(t => t != null)
                 .OrderBy(a => a.DisplayName)
                 .ToList();
+            _log.Debug($"...found {exporters.Count} exporters");
             return exporters;
         }
 
@@ -80,6 +84,7 @@ namespace Kinovea.ScreenManager.UserInterface
         {
             if (this._worker.IsBusy)
             {
+                _log.Debug("Cancelling export");
                 this._exporter.CancelAsync();
             }
             else
@@ -105,10 +110,13 @@ namespace Kinovea.ScreenManager.UserInterface
             this._exporter.ProgressUpdate += (o, evt) => this._worker.ReportProgress(evt.ProgressPercentage);
             try
             {
+                _log.Debug("Starting export...");
                 this._exporter.Export(this._frameServer.Metadata, opts);
+                _log.Debug("...export completed");
             }
             catch (Exception error)
             {
+                _log.Error("Unexpected error during export", error);
                 e.Result = error;
             }
         }
@@ -122,6 +130,7 @@ namespace Kinovea.ScreenManager.UserInterface
             this.exportProgress.Value = 0;
             this.exportProgress.Visible = true;
 
+            _log.Debug("Triggering export");
             this._exporter = this.Exporter;
             var opts = new Data.ExportSettings
             {
@@ -135,6 +144,7 @@ namespace Kinovea.ScreenManager.UserInterface
 
         private void ExportCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _log.Debug("Export finished");
             this.dataFormat.Enabled = true;
             this.filename.Enabled = true;
             this.optionsLabel.Enabled = true;

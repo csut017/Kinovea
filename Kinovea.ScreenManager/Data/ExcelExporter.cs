@@ -10,6 +10,8 @@ namespace Kinovea.ScreenManager.Data
     public class ExcelExporter
         : Exporter
     {
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public ExcelExporter()
         {
             this.Filter = ScreenManagerLang.DataExport_Excel_Filter;
@@ -28,10 +30,12 @@ namespace Kinovea.ScreenManager.Data
 
         public override void Export(Metadata metadata, ExportSettings options)
         {
+            _log.Debug("Starting Excel export");
             var output = new XLWorkbook();
             var ws = output.Worksheets.Add("Frames");
 
             // Add the headers
+            _log.Debug("Adding headers");
             var column = 2;
             ws.Cell(1, 1).Value = "Name";
             ws.Cell(1, 2).Value = "Time";
@@ -41,9 +45,11 @@ namespace Kinovea.ScreenManager.Data
                 ws.Cell(1, 3).Value = "Comments";
             }
 
+
             var eventColumns = new Dictionary<string, int>();
             if (options.IncludeEvents)
             {
+                _log.Debug("Scanning for events");
                 var events = new Dictionary<string, bool>();
                 foreach (var kf in metadata.Keyframes)
                 {
@@ -65,6 +71,7 @@ namespace Kinovea.ScreenManager.Data
             var row = 1;
             var count = 0;
             var total = metadata.Keyframes.Count;
+            _log.Debug("Adding rows");
             foreach (var kf in metadata.Keyframes)
             {
                 row++;
@@ -92,16 +99,19 @@ namespace Kinovea.ScreenManager.Data
             }
 
             // Generate the table
+            _log.Debug("Generating table");
             var range = ws.Range(1, 1, row, column);
             range.CreateTable("Frames");
 
             // Save everything
+            _log.Debug("Saving export");
             output.SaveAs(options.Filename);
             if (this.IsCancelling) return;
 
             // Open the file if requested
             if (options.OpenAfterSave)
             {
+                _log.Debug("Opening export");
                 System.Diagnostics.Process.Start(options.Filename);
             }
         }
