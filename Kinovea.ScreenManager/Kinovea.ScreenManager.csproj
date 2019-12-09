@@ -297,6 +297,10 @@
     <Compile Include="Data\Exporter.cs" />
     <Compile Include="Data\ExporterAttribute.cs" />
     <Compile Include="Data\ExportSettings.cs" />
+    <Compile Include="Data\Rtf\Processor.cs" />
+    <Compile Include="Data\Rtf\Token.cs" />
+    <Compile Include="Data\Rtf\TokenStream.cs" />
+    <Compile Include="Data\Rtf\TokenType.cs" />
     <Compile Include="DrawingClipboard.cs" />
     <Compile Include="FilePatterns\PatternSymbolsCommand.cs" />
     <Compile Include="FilePatterns\Filenamer.cs" />

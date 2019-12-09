@@ -1015,11 +1015,29 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include Comments.
+        /// </summary>
+        public static string dlgExportData_IncludeComments {
+            get {
+                return ResourceManager.GetString("dlgExportData_IncludeComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include Events.
         /// </summary>
         public static string dlgExportData_IncludeEvents {
             get {
                 return ResourceManager.GetString("dlgExportData_IncludeEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open After Saving.
+        /// </summary>
+        public static string dlgExportData_OpenAfterSave {
+            get {
+                return ResourceManager.GetString("dlgExportData_OpenAfterSave", resourceCulture);
             }
         }
         
@@ -1596,6 +1614,15 @@ namespace Kinovea.ScreenManager.Languages {
         public static string Error_Capture_InvalidFile_Title {
             get {
                 return ResourceManager.GetString("Error_Capture_InvalidFile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Failed.
+        /// </summary>
+        public static string Error_ExportFailed {
+            get {
+                return ResourceManager.GetString("Error_ExportFailed", resourceCulture);
             }
         }
         
@@ -2653,7 +2680,7 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export Data....
+        ///   Looks up a localized string similar to E&amp;xport Data....
         /// </summary>
         public static string mnuExportData {
             get {

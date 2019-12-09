@@ -1297,7 +1297,7 @@
     <value>All files (*.*)|*.*</value>
   </data>
   <data name="mnuExportData" xml:space="preserve">
-    <value>Export Data...</value>
+    <value>E&amp;xport Data...</value>
   </data>
   <data name="DataExport_Excel" xml:space="preserve">
     <value>Excel</value>
@@ -1325,5 +1325,14 @@
   </data>
   <data name="dlgExportData_Title" xml:space="preserve">
     <value>Export Data</value>
+  </data>
+  <data name="dlgExportData_IncludeComments" xml:space="preserve">
+    <value>Include Comments</value>
+  </data>
+  <data name="dlgExportData_OpenAfterSave" xml:space="preserve">
+    <value>Open After Saving</value>
+  </data>
+  <data name="Error_ExportFailed" xml:space="preserve">
+    <value>Export Failed</value>
   </data>
 </root>

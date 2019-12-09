@@ -1581,7 +1581,14 @@ namespace Kinovea.ScreenManager
             saveFileDialog.FileName = Path.GetFileNameWithoutExtension(player.FrameServer.Metadata.FullPath);
             if (saveFileDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveFileDialog.FileName)) return;
 
-            dlg.Exporter.Export(saveFileDialog.FileName, player.FrameServer.Metadata, dlg.Options);
+            try
+            {
+                dlg.Exporter.Export(saveFileDialog.FileName, player.FrameServer.Metadata, dlg.Options);
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, ScreenManagerLang.Error_ExportFailed, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 

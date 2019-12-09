@@ -44,7 +44,16 @@ namespace Kinovea.ScreenManager.UserInterface
         {
             var attrib = this.dataFormat.SelectedItem as Data.ExporterAttribute;
             var exporter = Activator.CreateInstance(attrib.ExporterType) as Data.Exporter;
+
+            // Allowed settings
+            this.optionIncludeComments.Enabled = exporter.AllowedSettings.IncludeComments;
             this.optionIncludeEvents.Enabled = exporter.AllowedSettings.IncludeEvents;
+            this.optionOpenAfterSave.Enabled = exporter.AllowedSettings.OpenAfterSave;
+
+            // Default settings
+            this.optionIncludeComments.Checked = exporter.DefaultSettings.IncludeComments;
+            this.optionIncludeEvents.Checked = exporter.DefaultSettings.IncludeEvents;
+            this.optionOpenAfterSave.Checked = exporter.DefaultSettings.OpenAfterSave;
         }
 
         public Data.Exporter Exporter
@@ -63,7 +72,9 @@ namespace Kinovea.ScreenManager.UserInterface
             {
                 return new Data.ExportSettings
                 {
-                    IncludeEvents = this.optionIncludeEvents.Checked
+                    IncludeComments = this.optionIncludeComments.Checked,
+                    IncludeEvents = this.optionIncludeEvents.Checked,
+                    OpenAfterSave = this.optionOpenAfterSave.Checked,
                 };
             }
         }
@@ -73,7 +84,10 @@ namespace Kinovea.ScreenManager.UserInterface
             this.Text = ScreenManagerLang.dlgExportData_Title;
             this.dataFormatLabel.Text = ScreenManagerLang.dlgExportData_Format;
             this.optionsLabel.Text = ScreenManagerLang.dlgExportData_Options;
+            this.optionIncludeComments.Text = ScreenManagerLang.dlgExportData_IncludeComments;
             this.optionIncludeEvents.Text = ScreenManagerLang.dlgExportData_IncludeEvents;
+            this.optionOpenAfterSave.Text = ScreenManagerLang.dlgExportData_OpenAfterSave;
+
             this.cancelButton.Text = ScreenManagerLang.dlgExportData_Cancel;
             this.exportButton.Text = ScreenManagerLang.dlgExportData_Export;
         }
