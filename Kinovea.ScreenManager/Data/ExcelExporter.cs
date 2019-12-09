@@ -63,6 +63,8 @@ namespace Kinovea.ScreenManager.Data
 
             // Add each row of data
             var row = 1;
+            var count = 0;
+            var total = metadata.Keyframes.Count;
             foreach (var kf in metadata.Keyframes)
             {
                 row++;
@@ -84,6 +86,8 @@ namespace Kinovea.ScreenManager.Data
                     }
                 }
 
+                ++count;
+                this.ReportProgress(count * 100 / total);
                 if (this.IsCancelling) return;
             }
 

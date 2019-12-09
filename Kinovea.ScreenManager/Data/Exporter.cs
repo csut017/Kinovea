@@ -1,6 +1,6 @@
 ﻿using Kinovea.ScreenManager.Languages;
 using System;
-using System.Linq;
+using System.ComponentModel;
 
 namespace Kinovea.ScreenManager.Data
 {
@@ -16,6 +16,8 @@ namespace Kinovea.ScreenManager.Data
             this.DefaultSettings = new ExportSettings();
         }
 
+        public event ProgressChangedEventHandler ProgressUpdate;
+
         public ExportSettings AllowedSettings
         {
             get; protected set;
@@ -27,11 +29,6 @@ namespace Kinovea.ScreenManager.Data
         }
 
         public string Filter
-        {
-            get; protected set;
-        }
-
-        public string Title
         {
             get; protected set;
         }
@@ -53,6 +50,16 @@ namespace Kinovea.ScreenManager.Data
                     this._isCancelling = value;
                 }
             }
+        }
+
+        public string Title
+        {
+            get; protected set;
+        }
+
+        public void CancelAsync()
+        {
+            this.IsCancelling = true;
         }
 
         public abstract void Export(Metadata metadata, ExportSettings options);
@@ -84,9 +91,9 @@ namespace Kinovea.ScreenManager.Data
             return seconds;
         }
 
-        public void CancelAsync()
+        protected void ReportProgress(int progress)
         {
-            this.IsCancelling = true;
+            this.ProgressUpdate?.Invoke(this, new ProgressChangedEventArgs(progress, null));
         }
     }
 }

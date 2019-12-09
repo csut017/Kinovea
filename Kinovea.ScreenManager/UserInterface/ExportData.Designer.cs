@@ -39,6 +39,7 @@
             this.filenameLabel = new System.Windows.Forms.Label();
             this.filename = new System.Windows.Forms.TextBox();
             this.findFileButton = new System.Windows.Forms.Button();
+            this.exportProgress = new System.Windows.Forms.ProgressBar();
             this.optionsLabel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -168,6 +169,14 @@
             this.findFileButton.UseVisualStyleBackColor = true;
             this.findFileButton.Click += new System.EventHandler(this.findFileButton_Click);
             // 
+            // exportProgress
+            // 
+            this.exportProgress.Location = new System.Drawing.Point(15, 172);
+            this.exportProgress.Name = "exportProgress";
+            this.exportProgress.Size = new System.Drawing.Size(273, 23);
+            this.exportProgress.TabIndex = 8;
+            this.exportProgress.Visible = false;
+            // 
             // ExportData
             // 
             this.AcceptButton = this.exportButton;
@@ -175,6 +184,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(462, 207);
+            this.Controls.Add(this.exportProgress);
             this.Controls.Add(this.findFileButton);
             this.Controls.Add(this.filename);
             this.Controls.Add(this.filenameLabel);
@@ -212,5 +222,6 @@
         private System.Windows.Forms.Label filenameLabel;
         private System.Windows.Forms.TextBox filename;
         private System.Windows.Forms.Button findFileButton;
+        private System.Windows.Forms.ProgressBar exportProgress;
     }
 }

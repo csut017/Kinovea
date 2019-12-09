@@ -26,9 +26,13 @@ namespace Kinovea.ScreenManager.UserInterface
             this.UpdateLanguage();
 
             // Initialise the background worker
-            this._worker = new BackgroundWorker();
+            this._worker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
             this._worker.DoWork += this.DoExport;
             this._worker.RunWorkerCompleted += this.ExportCompleted;
+            this._worker.ProgressChanged += this.ExportProgressChanged;
 
             // Load the exporters
             this.dataFormat.Items.AddRange(_exporters.Value.ToArray());
@@ -38,6 +42,11 @@ namespace Kinovea.ScreenManager.UserInterface
                 this.InitialiseOptions();
                 this.UpdateFileName();
             }
+        }
+
+        private void ExportProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.exportProgress.Value = e.ProgressPercentage;
         }
 
         private Data.Exporter Exporter
@@ -93,6 +102,7 @@ namespace Kinovea.ScreenManager.UserInterface
         private void DoExport(object sender, DoWorkEventArgs e)
         {
             var opts = e.Argument as Data.ExportSettings;
+            this._exporter.ProgressUpdate += (o, evt) => this._worker.ReportProgress(evt.ProgressPercentage);
             try
             {
                 this._exporter.Export(this._frameServer.Metadata, opts);
@@ -109,6 +119,8 @@ namespace Kinovea.ScreenManager.UserInterface
             this.filename.Enabled = false;
             this.optionsLabel.Enabled = false;
             this.exportButton.Enabled = false;
+            this.exportProgress.Value = 0;
+            this.exportProgress.Visible = true;
 
             this._exporter = this.Exporter;
             var opts = new Data.ExportSettings
@@ -127,6 +139,8 @@ namespace Kinovea.ScreenManager.UserInterface
             this.filename.Enabled = true;
             this.optionsLabel.Enabled = true;
             this.exportButton.Enabled = true;
+            this.exportProgress.Visible = false;
+
             if (e.Result is Exception error)
             {
                 MessageBox.Show(error.Message, ScreenManagerLang.Error_ExportFailed, MessageBoxButtons.OK, MessageBoxIcon.Error);
