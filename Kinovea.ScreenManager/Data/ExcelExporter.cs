@@ -108,6 +108,7 @@ namespace Kinovea.ScreenManager.Data
 
         private static void AppendRichText(string text, IXLCell cell)
         {
+            if (string.IsNullOrEmpty(text)) return;
             Processor.Process(text, (txt, fmt) =>
             {
                 cell.RichText
