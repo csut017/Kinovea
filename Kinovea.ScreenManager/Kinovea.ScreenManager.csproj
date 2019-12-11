@@ -533,6 +533,12 @@
     <Compile Include="DualCapture\CommonControlsCapture.Designer.cs">
       <DependentUpon>CommonControlsCapture.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\EventViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\EventViewer.Designer.cs">
+      <DependentUpon>EventViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\ExportData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -988,6 +994,9 @@
     <EmbeddedResource Include="Properties\Player.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Player.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\EventViewer.resx">
+      <DependentUpon>EventViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ExportData.resx">
       <DependentUpon>ExportData.cs</DependentUpon>

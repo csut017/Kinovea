@@ -72,7 +72,8 @@ namespace Kinovea.ScreenManager
         private bool canShowCommonControls;
         private int dualLaunchSettingsPendingCountdown;
         private AudioInputLevelMonitor audioInputLevelMonitor = new AudioInputLevelMonitor();
-        
+        private UserInterface.EventViewer eventViewer;
+
         // Video Filters
         private bool hasSvgFiles;
         private string svgPath;
@@ -103,6 +104,7 @@ namespace Kinovea.ScreenManager
         private ToolStripMenuItem mnuTwoMixed = new ToolStripMenuItem();
         private ToolStripMenuItem mnuSwapScreens = new ToolStripMenuItem();
         private ToolStripMenuItem mnuToggleCommonCtrls = new ToolStripMenuItem();
+        private ToolStripMenuItem mnuViewEventViewer = new ToolStripMenuItem();
 
         private ToolStripMenuItem mnuDeinterlace = new ToolStripMenuItem();
 
@@ -366,7 +368,11 @@ namespace Kinovea.ScreenManager
             mnuToggleCommonCtrls.ShortcutKeys = Keys.F5;
             mnuToggleCommonCtrls.Click += new EventHandler(mnuToggleCommonCtrlsOnClick);
             mnuToggleCommonCtrls.MergeAction = MergeAction.Append;
-            
+
+            mnuViewEventViewer.Enabled = true;
+            mnuViewEventViewer.Click += new EventHandler(mnuViewEventViewerOnClick);
+            mnuViewEventViewer.MergeAction = MergeAction.Append;
+
             ToolStripItem[] subScreens = new ToolStripItem[] { 		mnuOnePlayer,
                                                                     mnuTwoPlayers,
                                                                     new ToolStripSeparator(),
@@ -376,7 +382,10 @@ namespace Kinovea.ScreenManager
                                                                     mnuTwoMixed, 
                                                                     new ToolStripSeparator(), 
                                                                     mnuSwapScreens, 
-                                                                    mnuToggleCommonCtrls };
+                                                                    mnuToggleCommonCtrls,
+                                                                    new ToolStripSeparator(),
+                                                                    mnuViewEventViewer
+                                                            };
             mnuCatchScreens.DropDownItems.AddRange(subScreens);
             #endregion
 
@@ -750,6 +759,7 @@ namespace Kinovea.ScreenManager
             {
                 activeScreen = screen;
                 OrganizeMenus();
+                this.UpdateChildScreens();
                 return;
             }
 
@@ -758,7 +768,14 @@ namespace Kinovea.ScreenManager
                 
             activeScreen = screen;
             OrganizeMenus();
+            this.UpdateChildScreens();
         }
+
+        private void UpdateChildScreens()
+        {
+            if (this.eventViewer != null) this.eventViewer.ActiveScreen = this.activeScreen as PlayerScreen;
+        }
+
         public void SetAllToInactive()
         {
             foreach (AbstractScreen screen in screenList)
@@ -797,7 +814,10 @@ namespace Kinovea.ScreenManager
             if (screenList.Count > 0)
                 SetActiveScreen(screenList[0]);
             else
+            {
                 activeScreen = null;
+                this.UpdateChildScreens();
+            }
 
             foreach (PlayerScreen p in playerScreens)
                 p.Synched = false;
@@ -1420,7 +1440,8 @@ namespace Kinovea.ScreenManager
             mnuTwoMixed.Text = ScreenManagerLang.mnuTwoMixed;
             mnuSwapScreens.Text = ScreenManagerLang.mnuSwapScreens;
             mnuToggleCommonCtrls.Text = ScreenManagerLang.mnuToggleCommonCtrls;
-            
+            mnuViewEventViewer.Text = ScreenManagerLang.mnuViewEventViewer;
+
             // Image
             mnuDeinterlace.Text = ScreenManagerLang.mnuDeinterlace;
             mnuFormatAuto.Text = ScreenManagerLang.mnuFormatAuto;
@@ -2044,6 +2065,18 @@ namespace Kinovea.ScreenManager
         private void mnuToggleCommonCtrlsOnClick(object sender, EventArgs e)
         {
             view.ToggleCommonControls();
+        }
+
+        private void mnuViewEventViewerOnClick(object sender, EventArgs e)
+        {
+            if (this.eventViewer == null)
+            {
+                this.eventViewer = new UserInterface.EventViewer();
+            }
+
+            this.eventViewer.ActiveScreen = this.activeScreen as PlayerScreen;
+            this.eventViewer.Show();
+            this.eventViewer.Activate();
         }
         #endregion
 

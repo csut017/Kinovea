@@ -988,6 +988,15 @@ namespace Kinovea.ScreenManager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event Viewer.
+        /// </summary>
+        public static string dlgEventViewer_Title {
+            get {
+                return ResourceManager.GetString("dlgEventViewer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string dlgExportData_Cancel {
@@ -3216,6 +3225,15 @@ namespace Kinovea.ScreenManager.Languages {
         public static string mnuTwoPlayers {
             get {
                 return ResourceManager.GetString("mnuTwoPlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show E&amp;vents.
+        /// </summary>
+        public static string mnuViewEventViewer {
+            get {
+                return ResourceManager.GetString("mnuViewEventViewer", resourceCulture);
             }
         }
         

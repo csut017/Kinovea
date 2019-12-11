@@ -1338,4 +1338,10 @@
   <data name="Error_ExportFailed" xml:space="preserve">
     <value>Export Failed</value>
   </data>
+  <data name="dlgEventViewer_Title" xml:space="preserve">
+    <value>Event Viewer</value>
+  </data>
+  <data name="mnuViewEventViewer" xml:space="preserve">
+    <value>Show E&amp;vents</value>
+  </data>
 </root>
